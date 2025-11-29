@@ -7,7 +7,8 @@ class ServicesScreen extends StatefulWidget {
   State<ServicesScreen> createState() => _ServicesScreenState();
 }
 
-class _ServicesScreenState extends State<ServicesScreen> with SingleTickerProviderStateMixin {
+class _ServicesScreenState extends State<ServicesScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -25,47 +26,45 @@ class _ServicesScreenState extends State<ServicesScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+
       appBar: AppBar(
-        title: const Text('Mis Servicios'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.purple, Colors.blue],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+        title: const Text(
+          'Mis Servicios',
+          style: TextStyle(color: Colors.white),
         ),
+        backgroundColor: const Color(0xFF90063a),
+        elevation: 0,
+
         actions: [
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
-              // Acción para crear nuevo servicio
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Abriendo formulario para crear servicio')),
+                const SnackBar(
+                  content: Text('Abriendo formulario para crear servicio'),
+                ),
               );
             },
           ),
         ],
+
         bottom: TabBar(
           controller: _tabController,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white70,
-          indicatorColor: Colors.white,
+          indicatorColor: const Color(0xFFdaa520),
           tabs: const [
             Tab(text: 'Solicitudes'),
             Tab(text: 'Publicados'),
           ],
         ),
       ),
+
       body: TabBarView(
         controller: _tabController,
         children: [
-          // Tab 1: Solicitudes
           _SolicitudesTab(),
-          // Tab 2: Publicados
           _PublicadosTab(),
         ],
       ),
@@ -73,16 +72,17 @@ class _ServicesScreenState extends State<ServicesScreen> with SingleTickerProvid
   }
 }
 
-// Tab para Solicitudes
+// ---------------- TAB SOLICITUDES ----------------
+
 class _SolicitudesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Datos simulados para solicitudes
     final List<Map<String, dynamic>> _requests = [
       {
         'title': 'Diseño de logo',
         'user': 'Roberto Sánchez',
-        'description': 'Necesito un logo moderno para mi cafetería estudiantil. Los colores principales serán café y crema.',
+        'description':
+            'Necesito un logo moderno para mi cafetería estudiantil.',
         'date': '2025-11-15',
         'quantity': '1',
         'status': 'Pendiente',
@@ -90,7 +90,7 @@ class _SolicitudesTab extends StatelessWidget {
       {
         'title': 'Edición de video',
         'user': 'Laura Mendoza',
-        'description': 'Video de presentación para proyecto de clase, duración aproximada de 3 minutos.',
+        'description': 'Video de presentación para un proyecto.',
         'date': '2025-11-14',
         'quantity': '1',
         'status': 'Aceptada',
@@ -98,7 +98,7 @@ class _SolicitudesTab extends StatelessWidget {
       {
         'title': 'Diseño de logo',
         'user': 'José Paredes',
-        'description': 'Logo para equipo de fútbol universitario.',
+        'description': 'Logo para equipo universitario.',
         'date': '2025-11-10',
         'quantity': '1',
         'status': 'Rechazada',
@@ -116,94 +116,104 @@ class _SolicitudesTab extends StatelessWidget {
           final isRejected = request['status'] == 'Rechazada';
 
           return Card(
+            color: Colors.white,
             margin: const EdgeInsets.only(bottom: 16),
+            elevation: 3,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Título y chip de estado
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text(
                           request['title'],
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF90063a),
+                          ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          // Toggle estado visual
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Cambiando estado de ${request['title']}')),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: isPending ? Colors.orange[100] : isAccepted ? Colors.green[100] : Colors.red[100],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                isPending ? Icons.pending : isAccepted ? Icons.check_circle : Icons.cancel,
-                                color: isPending ? Colors.orange : isAccepted ? Colors.green : Colors.red,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                request['status'],
-                                style: TextStyle(
-                                  color: isPending ? Colors.orange : isAccepted ? Colors.green : Colors.red,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: isPending
+                              ? Colors.orange[100]
+                              : isAccepted
+                                  ? Colors.green[100]
+                                  : Colors.red[100],
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          request['status'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: isPending
+                                ? Colors.orange
+                                : isAccepted
+                                    ? Colors.green
+                                    : Colors.red,
                           ),
                         ),
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 8),
                   Text(
                     request['user'],
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black87,
+                    ),
                   ),
+
                   const SizedBox(height: 8),
                   Text(
                     request['description'],
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
+
                   const SizedBox(height: 12),
                   Text(
                     'Fecha: ${request['date']} - Cantidad: ${request['quantity']}',
                   ),
+
                   if (isPending) ...[
                     const SizedBox(height: 16),
+
                     Row(
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Solicitud aceptada'), backgroundColor: Colors.green),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                            child: const Text('Aceptar', style: TextStyle(color: Colors.white)),
+                            onPressed: () {},
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFdaa520),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
+                            child: const Text('Aceptar'),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Solicitud rechazada'), backgroundColor: Colors.red),
-                              );
-                            },
-                            style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+                            onPressed: () {},
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(
+                                  color: Color(0xFF90063a), width: 2),
+                              foregroundColor: const Color(0xFF90063a),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                            ),
                             child: const Text('Rechazar'),
                           ),
                         ),
@@ -220,84 +230,90 @@ class _SolicitudesTab extends StatelessWidget {
   }
 }
 
-// Tab para Publicados
+// ---------------- TAB PUBLICADOS ----------------
+
 class _PublicadosTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Datos simulados para servicios publicados
     final List<Map<String, dynamic>> _publishedServices = [
       {
         'title': 'Diseño de logos profesionales',
         'price': '\$25',
         'orders': '32 pedidos',
         'icon': Icons.design_services,
-        'category': 'Diseño',
       },
       {
         'title': 'Edición de videos',
         'price': '\$20',
         'orders': '15 pedidos',
         'icon': Icons.video_library,
-        'category': 'Tecnología',
       },
     ];
 
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: GridView.builder(
+        itemCount: _publishedServices.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           childAspectRatio: 0.85,
         ),
-        itemCount: _publishedServices.length,
         itemBuilder: (context, index) {
           final service = _publishedServices[index];
-          return GestureDetector(
-            onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Abriendo detalles de ${service['title']}')),
-              );
-            },
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.purple[50],
-                        shape: BoxShape.circle,
+          return Card(
+            color: Colors.white,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            elevation: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF90063a).withOpacity(0.15),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      service['icon'],
+                      size: 40,
+                      color: const Color(0xFF90063a),
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  Expanded(
+                    child: Text(
+                      service['title'],
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF90063a),
                       ),
-                      child: Icon(
-                        service['icon'],
-                        size: 40,
-                        color: Colors.purple,
-                      ),
                     ),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: Text(
-                        service['title'],
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                      ),
+                  ),
+
+                  Text(
+                    service['price'],
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFFdaa520),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      service['price'],
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      service['orders'],
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ],
-                ),
+                  ),
+
+                  const SizedBox(height: 4),
+                  Text(
+                    service['orders'],
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                ],
               ),
             ),
           );
